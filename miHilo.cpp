@@ -17,7 +17,14 @@ int main() {
     }
 
     void *valRet;
-    pthread_join(ph_hilo1, &valRet);
+
+    if (pthread_join(ph_hilo1, &valRet) != 0) {
+        cerr << "Error:" << errno << endl;
+        _exit(1);
+    }
+    else {
+        cout << "proccess successfull" << endl;
+    }
 
     return 0;
 }
