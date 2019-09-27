@@ -7,24 +7,27 @@
 
 using namespace std;
 
-void* thread(void *);
+void* thread(void*);
 
 const int N = 5;
 int var = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main() {
-	pthread_t ph_threads[N];
+	pthread_t ph_thread[N];
 
 	for (int i = 0; i < N; i++) {
-		if(pthread_create(&ph_threads[i], nullptr, thread, nullptr) != 0) {
-			cout << "Error creating the thread" << errno << endl;
+		if(pthread_create(&ph_thread[i], nullptr, thread, nullptr) != 0) {
+			cout << "Error creating the current thread" << errno << endl;
 			_exit(1);
 		}
 	}
 
+	
 	for (int i = 0; i < N; i++) {
 		void *valRet;
-		pthread_join(ph_threads[i], &valRet);
+		pthread_join(ph_thread[i], &valRet);
+
 	}
 
 	cout << "Var: " << var << endl;
@@ -32,11 +35,13 @@ int main() {
 	return 0;
 }
 
-void* thread(void *arg) {
+void* thread(void* arg) {
 	int value = 10;
 
 	for (int i = 0; i < 5000; i++) {
+		pthread_mutex_lock(&mutex);
 		var ++;
+		pthread_mutex_unlock(&mutex);
 	}
 
 	return nullptr;

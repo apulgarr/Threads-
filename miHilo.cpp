@@ -12,7 +12,7 @@ int main() {
     pthread_t ph_hilo1;
 
     if (pthread_create(&ph_hilo1, nullptr, hilo, nullptr) != 0) {
-        cerr << "Unexpected error creating the thread" << errno << endl;
+    	cerr << "Unexpected error creating the thread" << errno << endl;
         _exit(1);
     }
 
